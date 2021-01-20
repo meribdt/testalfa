@@ -13,5 +13,25 @@
     "name": "openexchange.base_currency",
     "type": "java.lang.String",
     "description": "A description for 'openexchange.base_currency'"
+  },
+  {
+    "name": "giphy.api_key",
+    "type": "java.lang.String",
+    "description": "A description for 'giphy.api_key'"
+  },
+  {
+    "name": "giphy.base_url",
+    "type": "java.lang.String",
+    "description": "A description for 'giphy.base_url'"
+  },
+  {
+    "name": "giphy.growth_phrase",
+    "type": "java.lang.String",
+    "description": "A description for 'giphy.growth_phrase'"
+  },
+  {
+    "name": "giphy.fall_phrase",
+    "type": "java.lang.String",
+    "description": "A description for 'giphy.fall_phrase'"
   }
 ]}
