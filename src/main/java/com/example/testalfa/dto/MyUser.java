@@ -14,7 +14,7 @@ public class MyUser {
     private String phone;
     private String website;
     private Company company;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public Integer getId() {
         return id;
