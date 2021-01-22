@@ -76,4 +76,19 @@ public class OpenexchangeResponse {
         this.rates = rates;
     }
 
+    public OpenexchangeResponse(
+        String discalaimer, 
+        String licanse, 
+        Integer timestamp,
+        String base,
+        Rates rates) {
+            this.disclaimer = discalaimer;
+            this.license = licanse;
+            this.timestamp = timestamp;
+            this.base = base;
+            this.rates = rates;
+        }
+
+    public OpenexchangeResponse(){}
+
 }

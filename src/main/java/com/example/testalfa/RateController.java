@@ -1,11 +1,6 @@
 package com.example.testalfa;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import com.example.testalfa.dto.GiphyResponse;
-import com.example.testalfa.dto.OpenexchangeResponse;
-import com.example.testalfa.dto.Rates;
+import com.example.testalfa.dto.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController()
 public class RateController {
 
 
@@ -38,6 +33,16 @@ public class RateController {
     @Value("${giphy.fall_phrase}")
     private String fallPhrase;
 
+    private Integer offset = null;
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public Integer getOffset() {
+        return this.offset;
+    }
+
 
     // PUBLIC REGION
 
@@ -45,15 +50,21 @@ public class RateController {
     @GetMapping(value = "/ratechange/{currencyID}")
     public @ResponseBody ResponseEntity<String> getRateChange(@PathVariable("currencyID") String currencyID) {
         OpenexchangeResponse currentRates = openExchangeClient.getCurrentRates();
-        Double actualRate = getRate(currentRates.getRates(), currencyID);
-        OpenexchangeResponse historicalRates = openExchangeClient.getHistoricalRates(getDateChanged(-1)) ;
-        Double lastRate = getRate(historicalRates.getRates(), currencyID);
+        if (currentRates == null || currentRates.getRates() == null) {
+            return getErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "WRONG_RESPONSE_FROM_API");
+        }
+        Double actualRate = getRate(currentRates, currencyID);
+        OpenexchangeResponse historicalRates = openExchangeClient.getHistoricalRates(IOpenexchangeClient.getDateChanged(-1)) ;
+        if (historicalRates == null || historicalRates.getRates() == null) {
+            return getErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "WRONG_RESPONSE_FROM_API");
+        }
+        Double lastRate = getRate(historicalRates, currencyID);
         if (actualRate == null || lastRate == null) {
             return getErrorPage(HttpStatus.BAD_REQUEST, "UNKNOWN_CURRENCY");
         }
-        String query = actualRate / lastRate > 1 ? growthPhrase : fallPhrase;        
-        Double offset = Math.random() * 1000;
-        String gifUrl = getGifUrl(giphyClient.searchGif(query, 1, offset.intValue()));
+        String query = actualRate / lastRate > 1 ? growthPhrase : fallPhrase;
+        if (offset == null) offset = IGiphyClient.getRandomOffset(1000);
+        String gifUrl = getGifUrl(giphyClient.searchGif(query, offset));
         if (gifUrl == null) {
             return getErrorPage(HttpStatus.NOT_FOUND, "NOT FOUND SUITABLE GIF, but your result is " + query);
         }
@@ -61,19 +72,9 @@ public class RateController {
     }
 
 
+
     // PRIVATE REGION
     
-
-    /*
-     * Returns date with the given difference to actual date
-     * @param  difference   number of days to substract or extract from the actual date
-     * @return changed date String formatted
-     */
-    private String getDateChanged(Integer difference){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, difference);
-        return new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-    }
 
     /*
      * Searches for suitable property in object of type Rates
@@ -81,13 +82,12 @@ public class RateController {
      * @param  code    String ISO code of currency
      * @return value for requested current code if present, null otherwice
      */
-    private Double getRate(Rates rates, String code) {
+    private Double getRate(OpenexchangeResponse currentRates, String code) {
         try {
-            var ratesMap = rates.toMap();
+            var ratesMap = currentRates.getRates().toMap();
             return (Double)ratesMap.get(baseCurrency) / (Double)ratesMap.get(code);
         } 
-        catch (Exception e) {            
-            e.printStackTrace();
+        catch (Exception e) {    
             return null;
         } 
     }
