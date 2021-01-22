@@ -2,36 +2,36 @@
   {
     "name": "openexchange.app_id",
     "type": "java.lang.String",
-    "description": "A description for 'openexchange.app_id'"
+    "description": "Application ID for Openexchange API"
   },
   {
     "name": "openexchange.base_url",
     "type": "java.lang.String",
-    "description": "A description for 'openexchange.base_url'"
+    "description": "Base Openexchange API url"
   },
   {
     "name": "openexchange.base_currency",
     "type": "java.lang.String",
-    "description": "A description for 'openexchange.base_currency'"
+    "description": "Base Openexchange currency"
   },
   {
     "name": "giphy.api_key",
     "type": "java.lang.String",
-    "description": "A description for 'giphy.api_key'"
+    "description": "Application key for giphy API"
   },
   {
     "name": "giphy.base_url",
     "type": "java.lang.String",
-    "description": "A description for 'giphy.base_url'"
+    "description": "Base Giphy API url"
   },
   {
     "name": "giphy.growth_phrase",
     "type": "java.lang.String",
-    "description": "A description for 'giphy.growth_phrase'"
+    "description": "Search query for growing conditions"
   },
   {
     "name": "giphy.fall_phrase",
     "type": "java.lang.String",
-    "description": "A description for 'giphy.fall_phrase'"
+    "description": "Search query for falling conditions'"
   }
 ]}

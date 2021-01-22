@@ -46,6 +46,7 @@ class GiphyMockTests {
 
     @Test
     void whenCorrectResponseShouldReturnImg() throws Exception {
+        rateController.setIsTest(true);
         rateController.setOffset(1000);
         Original original = new Original();
         original.setUrl("https://testurl.com");
@@ -65,6 +66,7 @@ class GiphyMockTests {
 
     @Test
     void whenWrongResponseShouldReturnNotFound() throws Exception {
+        rateController.setIsTest(true);
         rateController.setOffset(1000);        
         when(client.searchGif(growthPhrase, 1000)).thenReturn(null);
         when(client.searchGif(fallPhrase, 1000)).thenReturn(null);

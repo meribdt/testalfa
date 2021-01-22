@@ -33,14 +33,16 @@ public class RateController {
     @Value("${giphy.fall_phrase}")
     private String fallPhrase;
 
-    private Integer offset = null;
+    private Integer offset;
+
+    private Boolean isTest = false;
 
     public void setOffset(Integer offset) {
         this.offset = offset;
     }
 
-    public Integer getOffset() {
-        return this.offset;
+    public void setIsTest(Boolean isTest) {
+        this.isTest = isTest;
     }
 
 
@@ -63,7 +65,7 @@ public class RateController {
             return getErrorPage(HttpStatus.BAD_REQUEST, "UNKNOWN_CURRENCY");
         }
         String query = actualRate / lastRate > 1 ? growthPhrase : fallPhrase;
-        if (offset == null) offset = IGiphyClient.getRandomOffset(1000);
+        if (isTest != null && !isTest) offset = IGiphyClient.getRandomOffset(1000);
         String gifUrl = getGifUrl(giphyClient.searchGif(query, offset));
         if (gifUrl == null) {
             return getErrorPage(HttpStatus.NOT_FOUND, "NOT FOUND SUITABLE GIF, but your result is " + query);
