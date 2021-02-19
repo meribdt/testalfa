@@ -16,6 +16,7 @@ $ sudo cp {origin} {destination}
 *Edit permissions*
 ```sh
 $ sudo chmod 755 gradlew
+```
 
 *Run gradlew using command*
 ```sh
