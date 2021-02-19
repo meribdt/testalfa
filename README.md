@@ -2,6 +2,7 @@
 JAVA 11 runtime:
 ```sh
 $ sudo apt-get install openjdk-11-jre-headless
+```
 
 ### How to run
 *Create directory*
